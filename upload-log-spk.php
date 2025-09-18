@@ -5,10 +5,10 @@ $xml = simplexml_load_string($dataPost);
 
 $no_doc    = (string) $xml->IDOC[0]->ZSPK01[0]->ZSPK01_DTL[0]->NODOC;
 
-$host   = "172.16.0.113";
-$db     = "bmi_db";
-$userdb = "bmiroot";
-$passdb = "bmi@123456~";
+$host   = "";
+$db     = "";
+$userdb = "";
+$passdb = "";
 
 $mysqli = new mysqli($host, $userdb, $passdb, $db);
 
