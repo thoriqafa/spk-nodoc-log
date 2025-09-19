@@ -3,7 +3,8 @@ $dataPost = file_get_contents('php://input');
 
 $xml = simplexml_load_string($dataPost);
 
-$no_doc    = (string) $xml->IDOC[0]->ZSPK01[0]->ZSPK01_DTL[0]->NODOC;
+$no_doc       = (string) $xml->IDOC[0]->ZSPK01[0]->ZSPK01_DTL[0]->NODOC;
+$file_name    = (string) $xml->IDOC[0]->ZSPK01[0]->FILE_NAME;
 
 $host   = "";
 $db     = "";
@@ -18,10 +19,14 @@ if ($mysqli->connect_errno) {
     exit;
 }
 
+if (empty($no_doc)) {
+    exit;
+}
+
 // echo json_encode("Connected to: " . $mysqli->host_info);
 
-$stmt = $mysqli->prepare("INSERT INTO bmi_doc_log_sap (no_doc) VALUES (?)");
-$stmt->bind_param("s", $no_doc);
+$stmt = $mysqli->prepare("INSERT INTO bmi_doc_log_sap (no_doc, file_name) VALUES (?,?)");
+$stmt->bind_param("ss", $no_doc, $file_name);
 // $stmt->execute();
 
 if (!$stmt->execute()) {
@@ -34,7 +39,8 @@ if (!$stmt->execute()) {
     echo json_encode([
         "status" => "success",
         "message" => "Data berhasil disimpan",
-        "no_doc" => $no_doc
+        "no_doc" => $no_doc,
+        "file_name" => $file_name,
     ]);
 }
 
