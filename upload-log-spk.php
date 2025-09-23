@@ -6,18 +6,7 @@ $xml = simplexml_load_string($dataPost);
 $no_doc       = (string) $xml->IDOC[0]->ZSPK01[0]->ZSPK01_DTL[0]->NODOC;
 $file_name    = (string) $xml->IDOC[0]->ZSPK01[0]->FILE_NAME;
 
-$host   = "";
-$db     = "";
-$userdb = "";
-$passdb = "";
-
-$mysqli = new mysqli($host, $userdb, $passdb, $db);
-
-if ($mysqli->connect_errno) {
-    http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "Failed to connect MySQL"]);
-    exit;
-}
+require_once "conn.php";
 
 if (empty($no_doc)) {
     exit;
